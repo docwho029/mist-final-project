@@ -18,9 +18,10 @@ async function loadItems() {
     let productSlides = "";
 
     productsList.products.forEach( product => {
+      console.log(product)
       productSlides += 
       `
-      <div class="swiper-slide-two swiper-slide">
+      <div class="swiper-slide-two swiper-slide ">
         <div class="product-image" style="background-image:url(${product.thumbnail.replaceAll("'", "%27")})"></div>
         <div class="product-details">
           <div class="price-heart">

@@ -12,15 +12,17 @@
      <link rel="stylesheet" type="text/css" href="./home.css" />
      <link rel="stylesheet" type="text/css" href="./product-slider.css" />
 
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
      <title>prodshop - Your One Stop Destination For Shopping</title>
     </head>
   
   
   
-  <body>
+  <body class="">
     <nav class="section__navbar">
         <a href="#"><i class="fas fa-bars"></i></a>
-        <h2 id="taatghor">prodshop</h2>
+        <h2 id="taatghor"><span class="!text-[#6d56e5]">prod</span>shop</h2>
         <a href="search/search.html" id='search-button' ><i class="fas fa-search"></i></a>
         <a href="#"><i class="fas fa-shopping-cart"></i></a>
     </nav>
@@ -29,18 +31,40 @@
         <section class="section__slider">
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                   Slide 1 
+                  <div class="swiper-slide flex-row mesh-gradient-3">
+                    <div class="!pl-3 flex-col items-start justify-start max-w-[50%] hidden sm:flex">
+                      <div class="!text-slate-50 font-bold text-left">Apple MacBook Pro</div>
+                      <div class="!text-slate-100 text-left text-sm">
+                        The MacBook Pro 14 Inch in Space Grey is a powerful and sleek laptop, featuring Apple's M1 Pro chip for exceptional performance and a stunning Retina display.
+                      </div>
+                    </div>
+                    <div class="w-[50%] h-[80%] bg-contain bg-no-repeat bg-center" style="background-image:url(https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp)"></div>
                   </div>
-                  <div class="swiper-slide">Slide 2</div>
-                  <div class="swiper-slide">Slide 3</div>
-                  <div class="swiper-slide">Slide 4</div>
-                  <div class="swiper-slide">Slide 5</div>
-                </div>
-                <!-- <div class="swiper-button-next"></div>
+
+                  <div class="swiper-slide flex-row mesh-gradient-3">
+                    <div class="!pl-3 flex-col items-start justify-start max-w-[50%] hidden sm:flex">
+                      <div class="!text-slate-50 font-bold text-left">Apple Airpods</div>
+                      <div class="!text-slate-100 text-left text-sm">
+The Apple Airpods offer a seamless wireless audio experience. With easy pairing, high-quality sound, and Siri integration, they are perfect for on-the-go listening.                      </div>
+                    </div>
+                    <div class="w-[50%] h-[80%] bg-contain bg-no-repeat bg-center" style="background-image:url(https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods/thumbnail.webp)"></div>
+                  </div>
+
+                  <div class="swiper-slide flex-row mesh-gradient-3">
+                    <div class="!pl-3 flex-col items-start justify-start max-w-[50%] hidden sm:flex">
+                      <div class="!text-slate-50 font-bold text-left">iPhone 13 Pro</div>
+                      <div class="!text-slate-100 text-left text-sm">
+The iPhone 13 Pro is a cutting-edge smartphone with a powerful camera system, high-performance chip, and stunning display. It offers advanced features for users who demand top-notch technology.
+                      </div>
+                    </div>
+                    <div class="w-[50%] h-[80%] bg-contain bg-no-repeat bg-center" style="background-image:url(https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/thumbnail.webp)"></div>
+                  </div>
+                
+                  <!-- <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div> -->
-                <div class="swiper-pagination"></div>
               </div>
+              <div class="swiper-pagination"></div>
+              
         </section>
 
         <!-- <section class="section__product-row-1">
