@@ -24,10 +24,3 @@ var swiper = new Swiper(".mySwiper", {
   prevEl: ".product-swiper-button-prev",
 },
   });
-
-
-document.querySelectorAll('.fa-heart').forEach((heart)=> {
-  heart.addEventListener('click', (e)=>{
-   e.target.classList.toggle('red-heart');
-  })
-})

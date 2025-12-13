@@ -21,7 +21,7 @@ async function loadItems() {
       productSlides += 
       `
       <div class="swiper-slide-two swiper-slide">
-        <div class="product-image" style="background-image:url('${ product.thumbnail }')"></div>
+        <div class="product-image" style="background-image:url(${product.thumbnail.replaceAll("'", "%27")})"></div>
         <div class="product-details">
           <div class="price-heart">
             <span id="price">$${product.price}</span>
@@ -31,6 +31,7 @@ async function loadItems() {
         </div>
       </div>
       `
+
     });
 
     category.innerHTML = `
@@ -74,3 +75,9 @@ async function loadItems() {
  
 
 loadItems();
+
+document.addEventListener("click", e => {
+  if(e.target.matches(".fa-heart")) {
+    e.target.classList.toggle("red-heart");
+  }
+})
