@@ -1,10 +1,10 @@
 var swiper = new Swiper(".mySwiper", {
     spaceBetween: 30,
     centeredSlides: true,
-    // autoplay: {
-    //   delay: 2500,
-    //   disableOnInteraction: false,
-    // },
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
@@ -18,6 +18,16 @@ var swiper = new Swiper(".mySwiper", {
   var swiper2 = new Swiper(".product-swiper", {
     slidesPerView: 'auto',
     spaceBetween: 17,
+    freeMode: true,
+    navigation: {
+  nextEl: ".product-swiper-button-next",
+  prevEl: ".product-swiper-button-prev",
+},
+  });
+
+  var swiper2 = new Swiper(".popup-swiper", {
+    slidesPerView: 'auto',
+    spaceBetween: 25,
     freeMode: true,
     navigation: {
   nextEl: ".product-swiper-button-next",
