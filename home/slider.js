@@ -1,4 +1,4 @@
-var swiper = new Swiper(".mySwiper", {
+var swiper1 = new Swiper(".mySwiper", {
     spaceBetween: 30,
     centeredSlides: true,
     autoplay: {
@@ -25,12 +25,12 @@ var swiper = new Swiper(".mySwiper", {
 },
   });
 
-  var swiper2 = new Swiper(".popup-swiper", {
+  var swiper3 = new Swiper(".popup-swiper", {
     slidesPerView: 'auto',
     spaceBetween: 25,
     freeMode: true,
     navigation: {
-  nextEl: ".product-swiper-button-next",
-  prevEl: ".product-swiper-button-prev",
+  nextEl: ".popup-swiper-button-next",
+  prevEl: ".popup-swiper-button-prev",
 },
   });

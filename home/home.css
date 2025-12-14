@@ -253,10 +253,13 @@ section.section__slider {
 
 .heading-product-slider {
     font-weight: 600;
+    
 }
 
-.overlay, .popup {
-    transition: opacity 0.2s ease-in-out;
+.overlay, .popup, .searchBar {
+    transition: 
+        opacity 0.2s ease-in-out,
+        backdrop-filter 0.4s ease-in-out;
 }
 
 
@@ -297,10 +300,14 @@ section.section__slider {
 
 @media all and (max-width: 425px){ 
     .popup-swiper #price {
-        font-size: 1em !important;
+        font-size: 0.9em !important;
     }
     .popup-swiper #seller {
         transform: translateY(-6px);
+        font-size: 0.8em !important;
+    }
+    .popup-swiper .product-details {
+        padding-top:0.2em !important;
     }
 }
 
