@@ -19,6 +19,8 @@ async function loadItems() {
 
     productsList.products.forEach( product => {
       //console.log(product)
+      let favs = getFavs();
+      let isRed = ( favs.includes( String(product.id)) ? "red-heart" : "" );
       productSlides += 
       `
       <div data-product-id="${product.id}" class="swiper-slide-two swiper-slide">
@@ -26,7 +28,7 @@ async function loadItems() {
         <div class="product-details">
           <div class="price-heart">
             <span id="price">$${product.price}</span>
-            <i class="fas fa-heart"></i>
+            <i class="fas fa-heart ${isRed}"></i>
           </div>
           <span id="seller">${product.title}</span>
         </div>
@@ -79,6 +81,24 @@ loadItems();
 
 document.addEventListener("click", e => {
   if(e.target.matches(".fa-heart")) {
-    e.target.classList.toggle("red-heart");
+
+    //e.target.classList.toggle("red-heart");
+
+    let favs = getFavs();
+    const productClicked = e.target.closest(".swiper-slide-two");
+
+    if( favs.includes( String(productClicked.dataset.productId) ) ) {
+      favs = favs.filter( favID => favID != productClicked.dataset.productId );
+    } else {
+      favs.push( String( productClicked.dataset.productId ) )
+    }
+    const allInstancesOfHeartedCard = document.querySelectorAll(`[data-product-id="${productClicked.dataset.productId}"]`)
+    allInstancesOfHeartedCard.forEach( (card) => {
+      const heart = card.querySelector(".fa-heart");
+      heart.classList.toggle("red-heart"); console.log(heart);
+    });
+    localStorage.setItem( "favs" , JSON.stringify(favs) );
+    //loadItems();
+    //console.log("heart clicked")
   }
 })
