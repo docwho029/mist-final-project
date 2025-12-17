@@ -262,6 +262,18 @@ section.section__slider {
         backdrop-filter 0.4s ease-in-out;
 }
 
+.product-popup {
+    transition: transform 0.25s linear(0 0%, 0 1.8%, 0.01 3.6%, 0.03 6.35%, 0.07 9.1%, 0.13 11.4%, 0.19 13.4%, 0.27 15%, 0.34 16.1%, 0.54 18.35%, 0.66 20.6%, 0.72 22.4%, 0.77 24.6%, 0.81 27.3%, 0.85 30.4%, 0.88 35.1%, 0.92 40.6%, 0.94 47.2%, 0.96 55%, 0.98 64%, 0.99 74.4%, 1 86.4%, 1 100%);
+}
+
+.popup-down {
+    transform: translateY(100%);
+}
+
+.productSlides:hover {
+    cursor: pointer;
+}
+
 
 
 
@@ -326,3 +338,26 @@ section.section__slider {
 .mesh-gradient-2{--c-0:hsla(212,0%,0%,1);--x-0:93%;--y-0:93%;--y-1:9%;--x-1:26%;--c-1:hsla(212,0%,0%,1);--x-2:15%;--y-2:79%;--c-2:hsla(257.14285714285717,91%,27%,0.35);--y-3:104%;--x-3:40%;--c-3:hsla(212.47058823529412,100%,50%,0.5);--y-4:60%;--x-4:0%;--c-4:hsla(224.44444444444443,72%,36%,1);--x-5:92%;--y-5:37%;--c-5:hsla(248.30769230769235,52%,24%,1);--c-6:hsla(212.47058823529412,100%,50%,0.19);--y-6:16%;--x-6:101%;--x-7:90%;--y-7:13%;--c-7:hsla(227.6470588235294,98%,53%,1);--x-8:104%;--c-8:hsla(166.53061224489795,71%,60%,0.32);--y-8:56%;--x-9:97%;--c-9:hsla(219.2079207920792,83%,23%,0.18);--y-9:19%;;background-color:hsla(305,0%,0%,1);background-image:radial-gradient(circle at var(--x-0) var(--y-0), var(--c-0) var(--s-start-0),transparent var(--s-end-0)),radial-gradient(circle at var(--x-1) var(--y-1), var(--c-1) var(--s-start-1),transparent var(--s-end-1)),radial-gradient(circle at var(--x-2) var(--y-2), var(--c-2) var(--s-start-2),transparent var(--s-end-2)),radial-gradient(circle at var(--x-3) var(--y-3), var(--c-3) var(--s-start-3),transparent var(--s-end-3)),radial-gradient(circle at var(--x-4) var(--y-4), var(--c-4) var(--s-start-4),transparent var(--s-end-4)),radial-gradient(circle at var(--x-5) var(--y-5), var(--c-5) var(--s-start-5),transparent var(--s-end-5)),radial-gradient(circle at var(--x-6) var(--y-6), var(--c-6) var(--s-start-6),transparent var(--s-end-6)),radial-gradient(circle at var(--x-7) var(--y-7), var(--c-7) var(--s-start-7),transparent var(--s-end-7)),radial-gradient(circle at var(--x-8) var(--y-8), var(--c-8) var(--s-start-8),transparent var(--s-end-8)),radial-gradient(circle at var(--x-9) var(--y-9), var(--c-9) var(--s-start-9),transparent var(--s-end-9));animation:hero-gradient-animation 10s linear infinite alternate;background-blend-mode:normal,normal,normal,normal,normal,normal,normal,normal,normal,normal;}
 
 .mesh-gradient-3{background-color:hsla(173,77%,83%,1);background-image:radial-gradient(circle at 5% 1%, hsla(250,76%,61%,1) 7%,transparent 84%),radial-gradient(circle at 7% 81%, hsla(184,91%,91%,1) 16%,transparent 53%),radial-gradient(circle at 11% 29%, hsla(213,97%,75%,1) 8%,transparent 74%),radial-gradient(circle at 39% 52%, hsla(149,93%,64%,1) 6%,transparent 68%),radial-gradient(circle at 90% 50%, hsla(118,94%,89%,1) 2%,transparent 85%);background-blend-mode:normal,normal,normal,normal,normal;}
+
+
+/* ---------- product popup scrollbar ----------- */
+
+/* Chrome, Edge, Safari */
+.popupScroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.popupScroll::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+}
+
+.popupScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Firefox */
+.popupScroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.25) transparent;
+}

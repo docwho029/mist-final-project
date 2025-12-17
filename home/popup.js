@@ -9,6 +9,10 @@ const searchBar = document.querySelector(".searchBar");
 const searchBarInput = document.querySelector(".searchBarInput");
 const submitSearchBtn = document.querySelector(".submitSearch");
 
+const productPopup = document.querySelector(".product-popup");
+const productPopupContainer = document.querySelector(".product-popup-container");
+const productPopupSwiperSlides = document.querySelector(".productPopupSwiperSlides");
+
 function openMenu() {
     overlay.classList.remove("hidden");
     menu.classList.remove("hidden");
@@ -16,32 +20,198 @@ function openMenu() {
     setTimeout( () => {
         overlay.classList.add("backdrop-blur-md");
         menu.classList.remove("opacity-0")
+        productPopup.classList.remove("popup-down")
     }, 10 )
-    
 }
 
 function closeMenu() {
     overlay.classList.remove("backdrop-blur-md");
     menu.classList.add("opacity-0");
     searchBar.classList.add("opacity-0");
+    
     console.log("close")
     
     setTimeout( () => {
         menu.classList.add("hidden");
         searchBar.classList.add("hidden");
+        productPopup.classList.add("hidden");
     } , 200 )
     
     setTimeout( () => {
         overlay.classList.add("hidden");
     } , 400)
+}
+
+function openProductPopup(id) {
+    //closeMenu();
+    productPopup.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+    setTimeout( () => {
+        overlay.classList.add("backdrop-blur-md");
+        productPopup.classList.remove("popup-down")
+    }, 10 );
+    console.log(id);
+    renderProductPopup(id);
+}
+
+function closeProductPopup() {
+    console.log("close product")
+    productPopup.classList.add("popup-down")
+        setTimeout( () => {
+        productPopup.classList.add("hidden");
+    } , 200 )
+    setTimeout( () => {
+        overlay.classList.add("hidden");
+    } , 400)
+    closeMenu();
+}
+
+// console.log(cartBtn, crossPopup, overlay, menu)
+// console.log(searchBtn)
+
+//overlay.onclick = closeMenu;
+// overlay.onclick = closeProductPopup;
+
+// crossPopup.onclick = closeMenu;   ---- need to add document listener and look for cross child as we use innerhtml and destroys old elements with fresh ones.
+document.addEventListener("click", (e)=> {
+    if(e.target.closest(".fa-times-circle.normalPopupCross")) { closeMenu(); }
+    else if (e.target.closest(".fa-times-circle.productPopupCross")) { closeProductPopup(); }
+    else if(e.target.closest(".fa-heart")) { return }
+    else if(e.target.closest(".productSlides")) { 
+        const productCard = e.target.closest(".productSlides");
+        openProductPopup(productCard.dataset.productId); 
+    }
+    else if(e.target.closest(".overlay")) {
+        if( document.querySelector(".product-popup").classList.contains("hidden") ) {
+            // cart/search popup is visible rn
+            closeMenu();
+        } else {
+            closeProductPopup();
+        }
+    }
+})
+
+// ---------- hero section ---------------
+
+
+// --------------- product popup section (scroll touch close feature) ----------------
+let startY = 0; let isAtTop = false;
+document.addEventListener("touchstart", (e) => { 
+    const productPopupContainerScroll = e.target.closest(".product-popup-container");
+    if(!productPopupContainerScroll) return;
+
+    startY = e.touches[0].clientY;
+    isAtTop = productPopupContainerScroll.scrollTop === 0; 
+})
+
+document.addEventListener("touchmove", (e) => {
+    const productPopupContainerScroll = e.target.closest(".product-popup-container");
+    if(!productPopupContainerScroll) return;
+
+    const diff = e.touches[0].clientY - startY; 
+    if( isAtTop && diff > 120 ) { closeProductPopup(); }
+})
+
+function generateRatingDOM(rating) {
+    const yellowStars = Math.floor( Number(rating) );
+    let ratingHTML = "";
+    for( let i=0;  i<yellowStars; i++) {
+        ratingHTML += `<i class="fas fa-star !text-yellow-400"></i>`
+    }
+    for( let j=0; j<5-yellowStars; j++ ) {
+        ratingHTML += `<i class="fas fa-star !text-slate-200"></i>`
+    }
+    return `<div class="productPopup-rating !text-slate-600">
+            ${rating} | ${ratingHTML}
+          </div>`
 
 }
 
-console.log(cartBtn, crossPopup, overlay, menu)
-console.log(searchBtn)
+async function renderProductPopup(id) {
+    const res5 = await fetch(`https://dummyjson.com/products/${id}`);
+    const requiredProduct = await res5.json();
+    
 
-overlay.onclick = closeMenu;
-crossPopup.onclick = closeMenu;
+    imageSlides = "";
+    requiredProduct.images.forEach( link => {
+        imageSlides += 
+        `<div class="swiper-slide flex-row mesh-gradient-3">
+            <div class="w-[100%] h-[100%] bg-contain bg-no-repeat bg-center" style="background-image:url(${link.replaceAll("'", "%27")})"></div>
+        </div>`
+    });
+
+    slideReset();
+    
+    console.log(requiredProduct)
+    productPopupSwiperSlides.innerHTML = imageSlides;
+
+    // --------- productPopupContent -----------------
+
+    let tags = ""
+    requiredProduct.tags.forEach((tag)=> {
+        tags += `<span class="productPopup-tag !p-1 !px-3 rounded-2xl text-sm !text-slate-600 !bg-slate-200 border border-slate-300">${tag}</span>`
+        //console.log(tag)
+    })
+
+    let reviews = "";
+    requiredProduct.reviews.forEach((review)=> {
+        const iso = review.date;
+        const date = new Date(iso).toLocaleDateString("en-GB", {day: "2-digit", month: "short", year: "numeric"});
+        
+        reviews += `
+            <div class="productPopup-review border border-slate-300 rounded-lg !p-3 !mb-3">
+              <div class="reviewer-name-date flex justify-between">
+                <span class="!text-slate-900 !font-semibold">${review.reviewerName}</span> 
+                <span class="!text-slate-600">${date}</span>
+              </div>
+              ${generateRatingDOM(review.rating)}
+              <div class="review-text !text-slate-600">${review.comment}</div>
+            </div>
+        `
+    })
+
+    let favs = getFavs();
+    let isRed = ( favs.includes( String(id)) ? "red-heart" : "" );
+
+    let productPopupContentHTML = `
+        
+          <div class="productPopup-title !text-slate-900 !pb-1 font-bold text-xl md:text-3xl ">${requiredProduct.title}</div>
+          
+          ${generateRatingDOM(requiredProduct.rating)}
+
+          <div class="productPopup-details !text-slate-600 !font-medium">${requiredProduct.description}</div>
+          
+          <div class="productPopup-stock !text-slate-600 !pt-3">${requiredProduct.availabilityStatus} (${requiredProduct.stock}) | ${requiredProduct.shippingInformation}.</div>
+          <div class="productPopup-stock !text-slate-600 !pb-3"> ${requiredProduct.returnPolicy} | ${requiredProduct.warrantyInformation}.</div>
+          
+          <div class="productPopup-tags !mb-3 flex gap-2">
+            ${tags}
+          </div>
+          
+          <div data-product-id="${id}" class="productPopup-icons !my-3 flex flex-row items-center gap-3"> 
+            <div class="productPopup-buy rounded-4xl !p-1 !px-3 border-[0.2rem] font-semibold !text-[#6d56e5] border-[#6d56e5] hover:bg-[#6d56e5] hover:!text-slate-100 transition hover:cursor-pointer">Buy Now</div>
+            <i class="fas fa-heart ${isRed} text-2xl"></i>  
+          </div>
+          
+          
+          <div class="productPopup-reviews">
+            <div class="!text-slate-900 !font-bold !text-xl !mb-3">Reviews</div>
+
+            ${reviews}
+          
+          </div>
+          
+        
+    `
+    const productPopupContent = document.querySelector(".productPopup-content");
+    productPopupContent.innerHTML = productPopupContentHTML;
+    productPopupContainer.scrollTo({ top: 0, behavior: "smooth" })
+    
+}
+
+
+
+
 
 cartBtn.onclick = () => { openMenu(); renderCart() };
 
@@ -76,7 +246,7 @@ async function submitSearch() {
     console.log(searchResults);
     renderSearchResults(searchResults);
     const crossPopup = document.querySelector(".fa-times-circle");
-    crossPopup.onclick = closeMenu;
+    //crossPopup.onclick = closeMenu;
 }
 
 function renderSearchResults(searchResults) {
@@ -96,7 +266,7 @@ function renderSearchResults(searchResults) {
         let favs = getFavs();
         let isRed = ( favs.includes( String(product.id)) ? "red-heart" : "" );
         searchProductSlides += `
-                <div data-product-id="${product.id}" class="swiper-slide-two swiper-slide">
+                <div data-product-id="${product.id}" class="swiper-slide-two swiper-slide productSlides">
                   <div class="product-image" style="background-image:url(${product.thumbnail.replaceAll("'", "%27")})"></div>
                   <div class="product-details">
                     <div class="price-heart">
@@ -111,7 +281,7 @@ function renderSearchResults(searchResults) {
     let searchSlider = `
         <div class="flex justify-between !pr-2">
             <h2 class='heading-product-slider !text-xl' id='category-name'>${searchResults.products.length} Result(s)</h2>
-            <i class="fas fa-times-circle text-2xl hover:cursor-pointer"></i>
+            <i class="fas fa-times-circle normalPopupCross text-2xl hover:cursor-pointer"></i>
         </div>
         <section class="slidey !h-[33vh]">
             <div class="popup-swiper swiper !w-[100%] !h-[100%] !overflow-visible translate-y-[-2vh]">
@@ -153,7 +323,7 @@ function renderSearchResults(searchResults) {
 
 
 function getFavs() {
-    console.log("getting favs: ", JSON.parse( localStorage.getItem("favs") ))
+    //console.log("getting favs: ", JSON.parse( localStorage.getItem("favs") ))
     return JSON.parse( localStorage.getItem("favs") ) || [];
 }
 
@@ -165,7 +335,7 @@ async function renderCart() {
         const res4 = await fetch(`https://dummyjson.com/products/${elem}`);
         const product = await res4.json();
         favProductSlides += `
-        <div data-product-id="${product.id}" class="swiper-slide-two swiper-slide">
+        <div data-product-id="${product.id}" class="swiper-slide-two swiper-slide productSlides">
           <div class="product-image" style="background-image:url(${product.thumbnail.replaceAll("'", "%27")})"></div>
           <div class="product-details">
             <div class="price-heart">
@@ -180,7 +350,7 @@ async function renderCart() {
     let favSlider = `
         <div class="flex justify-between !pr-2">
             <h2 class='heading-product-slider !text-xl' id='category-name'>${favs.length} Favourite(s)</h2>
-            <i class="fas fa-times-circle text-2xl hover:cursor-pointer"></i>
+            <i class="fas fa-times-circle normalPopupCross text-2xl hover:cursor-pointer"></i>
         </div>
         <section class="slidey !h-[33vh]">
             <div class="popup-swiper swiper !w-[100%] !h-[100%] !overflow-visible translate-y-[-2vh]">

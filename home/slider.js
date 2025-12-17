@@ -34,3 +34,24 @@ var swiper1 = new Swiper(".mySwiper", {
   prevEl: ".popup-swiper-button-prev",
 },
   });
+
+  var productPageSwiper = new Swiper(".productPageSwiper", {
+    spaceBetween: 30,
+    centeredSlides: true,
+    // autoplay: {
+    //   delay: 2500,
+    //   disableOnInteraction: false,
+    // },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".productPageSwiper-button-next",
+      prevEl: ".productPageSwiper-button-prev",
+    },
+  });
+
+function slideReset() {
+  productPageSwiper.slideTo(0);
+}
